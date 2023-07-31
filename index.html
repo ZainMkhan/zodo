@@ -1,0 +1,100 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zodo</title>
+    <!-- Font Awsome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!--Google Fonts  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet">
+    <!--Style Sheet Link  -->
+    <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+    <div class="container">
+
+    <!-- Nav Bar  -->
+    <div class="nav-container">
+    <h1 class="logo">Zo<span class="logo-yellow">Do</span></h1>
+    <button class="project-btn">Task</button>
+    </div>
+    <!-- Todo Container -->
+    <div class="todo-container">
+    <!-- Date Heading Container -->
+    <div class="headings">
+    <div class="date-con">
+    <h2 class="today-day">March</h2>
+    <h2 class="today-date">15</h2>
+    </div>
+    <!-- Greeting Message Container -->
+    <div class="greeting-con">
+    <h1 class="greetings"></h1>
+    <h2 class="greetings-2">Would you like to add a task ?</h2>
+    </div>
+    </div>
+    <!-- Task Container -->
+    <div class="task-container">
+    <!-- Sort Container -->
+    <div class="sort-con">
+    <button class="sort-btn">Sort by</button>
+    <div class="sort-options">
+    <ul class="options-list">
+        <li class="option">Date</li>
+        <li class="option">Priority</li>
+    </ul>
+    </div>
+    </div>
+
+    <!-- Add Task Input field Container -->
+    <div class="add-task-con">
+    <input type="text" class="task-field" placeholder="Add a Task...">
+    <div class="task-field-extra">
+    <div class="input-date">
+        <div class="date-heading-con task-option">
+            <label for="date" class="select-date-heading">Select Date : </label>
+        </div>
+        <div class="date-calendar-con">
+            <input type="date" class="calendar-date">
+        </div>
+    </div>
+    <div class="input-priority task-option">
+        <div class="priority-heading-con">
+            <label for="priority" class="select-priority-heading">Select Priority : </label>
+        </div>
+        <div class="radio-options">
+            <input type="radio" name="option" id="low" value="low">
+            <label for="low">Low</label>   
+
+            <input type="radio" name="option" id="medium" value="medium">
+            <label for="medium">Medium</label>  
+
+            <input type="radio" name="option" id="high" value="high" >
+            <label for="high">High</label>  
+        </div>
+    </div>
+    </div>
+    <!-- Task list -->
+
+    </div>
+    <div class="task-list-container">
+    <ul class="task-list">
+       
+    </ul>
+    </div>
+    </div>
+
+    </div>
+    </div>
+    <span class="error-message"></span>
+    <script src="script.js"></script>
+    </body>
+    </html>
