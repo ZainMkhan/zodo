@@ -1,3 +1,16 @@
+let taskList;
+ function loadTasksFromLocalStorage() {
+  taskList = JSON.parse(localStorage.getItem("TaskList")) || [];
+  if(taskList === []){
+    return;
+  }
+  else{
+    taskList.forEach((tasks) => {
+      addToList(tasks.priority, tasks.task, tasks.date, tasks.status);
+      })
+  }
+}
+  
   //Home Page Greeting Functions
 
   const todayDate = new Date();
@@ -6,8 +19,6 @@
   let month = dateToString.substring(3, 7)
   let date = dateToString.substring(7, 10);
   let time = todayDate.getHours();
-
-  console.log(time)
 
   let greetingMonth = document.querySelector(".today-day");
   greetingMonth.innerText = month;
@@ -43,7 +54,9 @@ const prioritySelect = document.querySelectorAll('input[type="radio"]')
 const errorMessage = document.querySelector(".error-message");
 
 let priorirtySelected;
-
+if(typeof priorirtySelected === "undefined"){
+  priorirtySelected === "";
+}
 
 // Sort Button Function to Open
 const sortBtn = document.querySelector(".sort-btn");
@@ -92,7 +105,14 @@ function enterPressSubmit(e){
             showError("Please enter a Task");
             
         }else{
-        addToList(textField.value, dateSelected.value, priorirtySelected);
+        taskList.push({
+          task : textField.value,
+          date : dateSelected.value,
+          priority : priorirtySelected,
+          status : true,
+        })
+        localStorage.setItem("TaskList", JSON.stringify(taskList));
+        addToList(priorirtySelected, textField.value, dateSelected.value, status)
         }
         if(textField.value === ""){
             expandTaskField.classList.remove("show"); 
@@ -120,7 +140,6 @@ function showError(message){
 function checkPriority(priority, element) {
   element.closest(".task-display-priority").classList.remove("low", "medium", "high");
   let selectedPriority = priority;
-  console.log(selectedPriority);
 
   if (selectedPriority === "low") {
     element.closest(".task-display-priority").classList.add("low");
@@ -139,7 +158,9 @@ function checkPriority(priority, element) {
 
 // Add Task to List Function
 
-function addToList(task , date , priority){
+function addToList(priority , task , date , status){
+
+
 
     //TaskDisplayCon creating elements and appending them
 
@@ -164,7 +185,7 @@ function addToList(task , date , priority){
 
     let TaskPriority = document.createElement("span");
     TaskPriority.classList.add("task-display-priority");
-    if(priorirtySelected !== ""){
+    if(priority !== ""){
       TaskPriority.innerText = "#" + priority;
     }
     else{
@@ -449,9 +470,9 @@ function deleteTask(event) {
 }
 
 document.addEventListener("click", deleteTask);
+window.addEventListener("load", loadTasksFromLocalStorage);
 
 
-
-
+console.log(taskList)
 
 
