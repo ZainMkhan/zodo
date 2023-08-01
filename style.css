@@ -11,6 +11,7 @@
     width: 100%;
     background-color: #526D82;
     height: 100vh;
+    overflow-x: hidden;
 }
 
 .nav-container{
@@ -369,7 +370,8 @@ input[type="radio"]:checked + label[for="high"]:before{
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     border: 0.01px solid transparent;
-    transition: border 300ms ease-in-out;
+    transform: translateX(0), translateY(0);
+    transition: border 300ms ease-in-out, transform 1.5s ease-in-out;
     
 }
 
@@ -417,16 +419,41 @@ input[type="radio"]:checked + label[for="high"]:before{
 }
 
 .task-display-imp{
+    
     width: 8%;
+    height: 100%;
     font-size: 0.5em;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    align-items: end;
-    align-self: flex-end;
-    justify-content:flex-end;
+    justify-content: space-between;
 }
 
+
+.delete {
+    align-self: end;
+    content: "";
+    width: 15px;
+    height: 15px;
+    color: white;
+    background-color: #526D82;
+    border: 2px solid #F48484;
+    border-radius: 50%; 
+    transition: background-color 300ms ease-in-out;
+    margin-bottom: 5%;
+}
+
+.delete:hover{
+    background-color: #FF0000;
+}
+
+
+.imp-con{
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    align-self: end;
+    text-align: end;
+}
 
 /* Expanding Edit Task Con Styling */
 
@@ -524,6 +551,7 @@ input[type="radio"]:checked + label[for="high"]:before{
     transition: transform 1s ease-in-out;
     transform: translateX(-100%);
 }
+
 
 
 /* Priority Text Colors */

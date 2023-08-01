@@ -131,6 +131,9 @@ function checkPriority(priority, element) {
   if (selectedPriority === "high") {
     element.closest(".task-display-priority").classList.add("high");
   } 
+  else{
+    return;
+  }
 }
 
 
@@ -153,9 +156,20 @@ function addToList(task , date , priority){
     let taskDisplayImportants = document.createElement("div");
     taskDisplayImportants.classList.add("task-display-imp");
 
+    let taskDelete = document.createElement("span");
+    taskDelete.classList.add("delete");
+
+    let impCon = document.createElement("div");
+    impCon.classList.add("imp-con");
+
     let TaskPriority = document.createElement("span");
     TaskPriority.classList.add("task-display-priority");
-    TaskPriority.innerText = "#" + priority;
+    if(priorirtySelected !== ""){
+      TaskPriority.innerText = "#" + priority;
+    }
+    else{
+      TaskPriority.innerText = "";
+    }
    
 
     let taskDate = document.createElement("span");
@@ -170,8 +184,10 @@ function addToList(task , date , priority){
     liTask.innerText = task;
     taskDisplayCon.append(taskDisplayImportants);
 
-    taskDisplayImportants.append(TaskPriority);
-    taskDisplayImportants.append(taskDate);
+    taskDisplayImportants.append(taskDelete)
+    taskDisplayImportants.append(impCon)
+    impCon.append(TaskPriority);
+    impCon.append(taskDate);
     
 
     //TaskEditExpand creating elements and appending them
@@ -348,6 +364,7 @@ function generateUniqueId(prefix) {
     let editPriorirtySelected;
     let editPrioritySelects = editPriorityRadioOptions.querySelectorAll('input[type="radio"]');
     let editDateSelected = editDate.querySelector(".calendar-date");
+    
 
     editDateSelected.addEventListener("change", (event) => {
       editDateSelected.value = event.target.value;
@@ -361,66 +378,19 @@ function generateUniqueId(prefix) {
     });
 
     editSubmitBtn.addEventListener("click", function() {
-
-
-      if (editDateSelected.value !== "" && editPriorirtySelected !== "") {
-        // Both date and priority have been edited
+      if(editDateSelected.value !== ""){
         taskDate.innerText = editDateSelected.value;
-        TaskPriority.innerText = "#" + editPriorirtySelected;
-        checkPriority(editPriorirtySelected, TaskPriority);
         this.closest(".task-edit-expand").classList.remove("expand");
-      } else if (dateSelected.value !== "") {
-        // Only the date has been edited
-        taskDate.innerText = editDateSelected.value;
-      } else if (editPriorirtySelected !== "") {
-        // Only the priority has been edited
-        TaskPriority.innerText = "#" + editPriorirtySelected;
-        checkPriority(editPriorirtySelected, TaskPriority);
-      } else {
-        this.closest(".task-edit-expand").classList.remove("expand");
-        // Neither date nor priority have been edited
-        // You can add any specific actions or handling for this case if needed.
       }
-      
-      // After handling the edit, remove the "expand" class from the closest ancestor element.
-      
-
-
-
-
-
-
-
-
-
-      // if(dateSelected.value === "" || editPriorirtySelected === ""){
-      //   this.closest(".task-edit-expand").classList.remove("expand");
-      //   return;
-      // }
-      // else if(editDateSelected.value != "" && editPriorirtySelected === "" ){
-      //   taskDate.innerText = editDateSelected.value;
-      //   this.closest(".task-edit-expand").classList.remove("expand");
-      //   return;
-      // }
-      // else if(editDateSelected === "" && editPriorirtySelected != ""){
-      //   TaskPriority.innerText = "#" + editPriorirtySelected;
-      //   checkPriority(editPriorirtySelected,TaskPriority)
-      //   this.closest(".task-edit-expand").classList.remove("expand");
-      // }
-
-
-      // if(editDateSelected.value === "" ){
-      //   this.closest(".task-edit-expand").classList.remove("expand");
-      //   return;
-      // }
-      // else if(editPriorirtySelected === ""){
-      //   this.closest(".task-edit-expand").classList.remove("expand");
-      //   return;
-      // }
-      // else{
-      //   this.closest(".task-edit-expand").classList.remove("expand");
-      // }
-      
+      if(typeof editPriorirtySelected !== "undefined"){
+        TaskPriority.innerText = "#" + editPriorirtySelected;
+        checkPriority(editPriorirtySelected, TaskPriority);
+        this.closest(".task-edit-expand").classList.remove("expand");
+      }
+      else{
+        this.closest(".task-edit-expand").classList.remove("expand");
+        return;
+      }
     });
   
   // Adding the CSS rules to the document
@@ -441,21 +411,12 @@ function generateUniqueId(prefix) {
     textField.value = "";
     dateSelected.value = "";
     checkPriority(priority,TaskPriority)
-    priority.checked = false;
-
 
     prioritySelect.forEach((radio) => {
       radio.checked = false;
   });
 
-
-
-
-
-
-
-
-
+  priorirtySelected = "";
 }
 
 
@@ -474,6 +435,22 @@ expandEditTaskLi.addEventListener("click", function (e) {
         }
     }
   });
+
+// Deleting a task function
+
+function deleteTask(event) {
+  if (event.target.classList.contains("delete")) {
+    const taskCon = event.target.closest(".task-con");
+    taskCon.style.transform = "translateX(200%)";
+    setTimeout(function() {
+      taskCon.remove();
+    }, 1600); 
+  }
+}
+
+document.addEventListener("click", deleteTask);
+
+
 
 
 
