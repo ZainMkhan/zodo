@@ -405,18 +405,25 @@ input[type="radio"]:checked + label[for="high"]:before{
     border-right: none;
     border-top: none;
 }
-.done-icon{
+.done-icon-con{
     width: fit-content;
     color: #F6C90E;
-    font-size: 1.2em;
+    font-size: 1em;
     transform: rotate(0);
     transition: transform 250ms ease;
     padding: 1%;
 }
 
-.done-icon:hover{
-    transform: rotate(180deg);
+.done-icon{
+    width: fit-content;
+    color: #F6C90E;
+    font-size: 1em;
+    transform: rotate(0);
+    transition: transform 250ms ease;
+    padding: 1%;
 }
+
+
 
 .task-display-imp{
     
