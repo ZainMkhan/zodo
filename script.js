@@ -112,7 +112,7 @@ function enterPressSubmit(e){
           task : textField.value,
           date : dateSelected.value,
           priority : priorirtySelected,
-          status : true,
+          status,
         })
         localStorage.setItem("TaskList", JSON.stringify(taskList));
         addToList(priorirtySelected, textField.value, dateSelected.value, status)
@@ -171,8 +171,8 @@ function addToList(priority , task , date , status){
     taskDisplayCon.classList.add("task-display-con")
 
     let doneIcon = document.createElement("span");
-    doneIcon.classList.add("done-icon");
-    doneIcon.innerHTML = '<i class="fa-solid fa-circle-notch"></i>'
+    doneIcon.classList.add("done-icon-con");
+    doneIcon.innerHTML = '<i class="fa-solid fa-circle-notch done-icon"></i>'
 
     let liTask = document.createElement("li");
     liTask.classList.add("task");
@@ -448,7 +448,26 @@ function generateUniqueId(prefix) {
 
   priorirtySelected = "";
 }
+//Done Icon / Status True or False Function
 
+function statusDone(event){
+
+  if (event.target.classList.contains("done-icon")){
+    let iconDone = event.target;
+    let doneTaskElement = event.target.parentNode.parentNode.children[1];
+    if(status === true){
+      iconDone.style.transform = "rotate(0deg)";
+      doneTaskElement.style.textDecoration = "none"
+    }
+    else{
+      iconDone.style.transform = "rotate(180deg)";
+      doneTaskElement.style.textDecoration = "line-through";
+      status = true;
+    }
+  }
+}
+
+document.addEventListener("click", statusDone);
 
 //Task List Expanding Function
 
