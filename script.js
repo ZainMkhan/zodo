@@ -10,6 +10,8 @@ let taskList;
       })
   }
 }
+
+let index;
   
   //Home Page Greeting Functions
 
@@ -54,9 +56,7 @@ const prioritySelect = document.querySelectorAll('input[type="radio"]')
 const errorMessage = document.querySelector(".error-message");
 
 let priorirtySelected;
-if(typeof priorirtySelected === "undefined"){
-  priorirtySelected === "";
-}
+
 
 // Sort Button Function to Open
 const sortBtn = document.querySelector(".sort-btn");
@@ -98,13 +98,16 @@ textField.addEventListener("click", taskFieldExpand => {
 
 function enterPressSubmit(e){
     let expandTaskField = document.querySelector(".task-field-extra");
-    
     expandTaskField.classList.add("show"); 
     if(e.key === "Enter"){
         if(textField.value === ""){
             showError("Please enter a Task");
             
         }else{
+    //Checking Priority if not selected then remain empty and not Undefined
+    if(typeof priorirtySelected === "undefined"){
+      priorirtySelected = "";
+    }
         taskList.push({
           task : textField.value,
           date : dateSelected.value,
@@ -401,10 +404,15 @@ function generateUniqueId(prefix) {
     editSubmitBtn.addEventListener("click", function() {
       if(editDateSelected.value !== ""){
         taskDate.innerText = editDateSelected.value;
+        taskList[index].date = editDateSelected.value;
         this.closest(".task-edit-expand").classList.remove("expand");
+        updateLocalStorage("TaskList", taskList);
+        console.log(taskList)
       }
       if(typeof editPriorirtySelected !== "undefined"){
         TaskPriority.innerText = "#" + editPriorirtySelected;
+        taskList[index].priority = editPriorirtySelected;
+        updateLocalStorage("TaskList", taskList);
         checkPriority(editPriorirtySelected, TaskPriority);
         this.closest(".task-edit-expand").classList.remove("expand");
       }
@@ -412,6 +420,7 @@ function generateUniqueId(prefix) {
         this.closest(".task-edit-expand").classList.remove("expand");
         return;
       }
+
     });
   
   // Adding the CSS rules to the document
@@ -451,8 +460,11 @@ expandEditTaskLi.addEventListener("click", function (e) {
   if (e.target.classList.contains("task")) {
         const taskElement = e.target;
         const taskEditExpand = taskElement.parentNode.nextElementSibling;
+        let taskId = taskElement.innerText;
         if (taskEditExpand) {
           taskEditExpand.classList.toggle("expand");
+          index = taskList.findIndex((taskObj) => taskObj.task === taskId);
+          console.log(index)
         }
     }
   });
@@ -462,7 +474,13 @@ expandEditTaskLi.addEventListener("click", function (e) {
 function deleteTask(event) {
   if (event.target.classList.contains("delete")) {
     const taskCon = event.target.closest(".task-con");
+    const parentContainer = taskCon.parentNode;
+    const taskConList = Array.from(parentContainer.children);
+    const delIndex = taskConList.indexOf(taskCon);
+    taskList.splice(delIndex, 1);
     taskCon.style.transform = "translateX(200%)";
+    updateLocalStorage("TaskList", taskList);
+    console.log(taskList)
     setTimeout(function() {
       taskCon.remove();
     }, 1600); 
@@ -473,6 +491,9 @@ document.addEventListener("click", deleteTask);
 window.addEventListener("load", loadTasksFromLocalStorage);
 
 
-console.log(taskList)
+// Update Local Storage on Edit
 
-
+function updateLocalStorage(key, arr){
+  localStorage.removeItem(key);
+  localStorage.setItem(key, JSON.stringify(arr));
+}
