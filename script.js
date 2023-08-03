@@ -1,13 +1,13 @@
 let taskList;
- function loadTasksFromLocalStorage() {
+function loadTasksFromLocalStorage() {
   taskList = JSON.parse(localStorage.getItem("TaskList")) || [];
-  if(taskList === []){
+  if (taskList.length === 0) {
     return;
-  }
-  else{
+  } else {
     taskList.forEach((tasks) => {
       addToList(tasks.priority, tasks.task, tasks.date, tasks.status);
-      })
+
+    });
   }
 }
 
@@ -188,6 +188,7 @@ function addToList(priority , task , date , status){
 
     let TaskPriority = document.createElement("span");
     TaskPriority.classList.add("task-display-priority");
+
     if(priority !== ""){
       TaskPriority.innerText = "#" + priority;
     }
@@ -444,11 +445,11 @@ function generateUniqueId(prefix) {
 
     prioritySelect.forEach((radio) => {
       radio.checked = false;
-
-    //Function to check Status and add stlying
-    statusCheck(status, doneIcon, liTask)
   });
+  //Function to check Status and add stlying
+  statusCheck(status, doneIcon, liTask)
 
+  //Priority Selected RESET
   priorirtySelected = "";
 }
 //Done Icon / Status True or False Function
@@ -462,25 +463,22 @@ function statusDone(event) {
     const taskConList = Array.from(parentContainer.children);
     const statusConIndex = taskConList.indexOf(taskCon);
 
-    if (taskList[statusConIndex].status === true) {
-      taskList[statusConIndex].status = false;
-      updateLocalStorage("TaskList", taskList);
-    } else if (taskList[statusConIndex].status === false) {
-      taskList[statusConIndex].status = true;
-      updateLocalStorage("TaskList", taskList);
-    }
+    taskList[statusConIndex].status = !taskList[statusConIndex].status;
+    taskList = statusBottomTask(taskList);
+    updateLocalStorage("TaskList", taskList);
     statusCheck(taskList[statusConIndex].status, iconDone, doneTaskElement);
+    location.reload();
   }
 }
 
 function statusCheck(status, icon, element) {
-  if (status === false) {
-    icon.style.transform = "rotate(0)";
-    element.style.textDecoration = "none";
-  }
-  if (status === true) {
+  if (status) {
     icon.style.transform = "rotate(180deg)";
     element.style.textDecoration = "line-through";
+  }
+  if(!status){
+    icon.style.transform = "rotate(0deg)";
+    element.style.textDecoration = "none";
   }
 }
 
@@ -500,7 +498,6 @@ expandEditTaskLi.addEventListener("click", function (e) {
         if (taskEditExpand) {
           taskEditExpand.classList.toggle("expand");
           index = taskList.findIndex((taskObj) => taskObj.task === taskId);
-          console.log(index)
         }
     }
   });
@@ -514,7 +511,6 @@ function deleteTask(event) {
     const parentContainer = taskCon.parentNode;
     const taskConList = Array.from(parentContainer.children);
     const delIndex = taskConList.indexOf(taskCon);
-    console.log(taskConList)
     taskList.splice(delIndex, 1);
     taskCon.style.transform = "translateX(200%)";
     updateLocalStorage("TaskList", taskList);
@@ -525,7 +521,7 @@ function deleteTask(event) {
 }
 
 document.addEventListener("click", deleteTask);
-window.addEventListener("load", loadTasksFromLocalStorage);
+// window.addEventListener("load", loadTasksFromLocalStorage);
 
 
 // Update Local Storage on Edit
@@ -534,3 +530,18 @@ function updateLocalStorage(key, arr){
   localStorage.removeItem(key);
   localStorage.setItem(key, JSON.stringify(arr));
 }
+
+
+//Function to Filter Status on Default to be in the bottom
+
+function statusBottomTask(list){
+ let taskListTrue = list.filter((task) => task.status === true);
+ let taskListFalse = list.filter((task) => task.status === false);
+
+ return taskList = [...taskListFalse, ...taskListTrue];
+ window.location.reload()
+}
+
+
+
+loadTasksFromLocalStorage()
