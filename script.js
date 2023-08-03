@@ -112,7 +112,7 @@ function enterPressSubmit(e){
           task : textField.value,
           date : dateSelected.value,
           priority : priorirtySelected,
-          status,
+          status : false,
         })
         localStorage.setItem("TaskList", JSON.stringify(taskList));
         addToList(priorirtySelected, textField.value, dateSelected.value, status)
@@ -444,26 +444,43 @@ function generateUniqueId(prefix) {
 
     prioritySelect.forEach((radio) => {
       radio.checked = false;
+
+    //Function to check Status and add stlying
+    statusCheck(status, doneIcon, liTask)
   });
 
   priorirtySelected = "";
 }
 //Done Icon / Status True or False Function
 
-function statusDone(event){
-
-  if (event.target.classList.contains("done-icon")){
+function statusDone(event) {
+  if (event.target.classList.contains("done-icon")) {
     let iconDone = event.target;
     let doneTaskElement = event.target.parentNode.parentNode.children[1];
-    if(status === true){
-      iconDone.style.transform = "rotate(0deg)";
-      doneTaskElement.style.textDecoration = "none"
+    const taskCon = event.target.closest(".task-con");
+    const parentContainer = taskCon.parentNode;
+    const taskConList = Array.from(parentContainer.children);
+    const statusConIndex = taskConList.indexOf(taskCon);
+
+    if (taskList[statusConIndex].status === true) {
+      taskList[statusConIndex].status = false;
+      updateLocalStorage("TaskList", taskList);
+    } else if (taskList[statusConIndex].status === false) {
+      taskList[statusConIndex].status = true;
+      updateLocalStorage("TaskList", taskList);
     }
-    else{
-      iconDone.style.transform = "rotate(180deg)";
-      doneTaskElement.style.textDecoration = "line-through";
-      status = true;
-    }
+    statusCheck(taskList[statusConIndex].status, iconDone, doneTaskElement);
+  }
+}
+
+function statusCheck(status, icon, element) {
+  if (status === false) {
+    icon.style.transform = "rotate(0)";
+    element.style.textDecoration = "none";
+  }
+  if (status === true) {
+    icon.style.transform = "rotate(180deg)";
+    element.style.textDecoration = "line-through";
   }
 }
 
@@ -476,7 +493,7 @@ const expandEditTaskLi = document.querySelector(".task-list");
 
 expandEditTaskLi.addEventListener("click", function (e) {
   
-  if (e.target.classList.contains("task")) {
+     if (e.target.classList.contains("task")) {
         const taskElement = e.target;
         const taskEditExpand = taskElement.parentNode.nextElementSibling;
         let taskId = taskElement.innerText;
@@ -488,6 +505,7 @@ expandEditTaskLi.addEventListener("click", function (e) {
     }
   });
 
+
 // Deleting a task function
 
 function deleteTask(event) {
@@ -496,10 +514,10 @@ function deleteTask(event) {
     const parentContainer = taskCon.parentNode;
     const taskConList = Array.from(parentContainer.children);
     const delIndex = taskConList.indexOf(taskCon);
+    console.log(taskConList)
     taskList.splice(delIndex, 1);
     taskCon.style.transform = "translateX(200%)";
     updateLocalStorage("TaskList", taskList);
-    console.log(taskList)
     setTimeout(function() {
       taskCon.remove();
     }, 1600); 
