@@ -114,8 +114,10 @@ function enterPressSubmit(e){
           priority : priorirtySelected,
           status : false,
         })
+        taskList = statusBottomTask(taskList);
         localStorage.setItem("TaskList", JSON.stringify(taskList));
         addToList(priorirtySelected, textField.value, dateSelected.value, status)
+        location.reload();
         }
         if(textField.value === ""){
             expandTaskField.classList.remove("show"); 
