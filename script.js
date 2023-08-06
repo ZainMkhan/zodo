@@ -464,7 +464,6 @@ function statusDone(event) {
     const parentContainer = taskCon.parentNode;
     const taskConList = Array.from(parentContainer.children);
     const statusConIndex = taskConList.indexOf(taskCon);
-
     taskList[statusConIndex].status = !taskList[statusConIndex].status;
     taskList = statusBottomTask(taskList);
     updateLocalStorage("TaskList", taskList);
@@ -474,13 +473,16 @@ function statusDone(event) {
 }
 
 function statusCheck(status, icon, element) {
+  let statusTaskCon = element.parentNode.parentNode;
   if (status) {
     icon.style.transform = "rotate(180deg)";
     element.style.textDecoration = "line-through";
+    statusTaskCon.style.marginTop = "5%";
   }
   if(!status){
     icon.style.transform = "rotate(0deg)";
     element.style.textDecoration = "none";
+    
   }
 }
 
