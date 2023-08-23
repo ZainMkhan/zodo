@@ -531,10 +531,9 @@ input[type="radio"]:checked + label[for="high"]:before{
     font-size: 0.6em;
 }
 
-
-
-
-
+.selected{
+    background-color: #a98908;
+}
 
 /* Display none */
 
