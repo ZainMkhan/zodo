@@ -477,6 +477,20 @@ function generateUniqueId(prefix) {
       border: 5px solid black;
       transition: all 250ms;
     }
+    @media screen and (max-width: 992px){
+      input[type="radio"]:checked + label[for="${uniqueId1}"]:before,
+      input[type="radio"]:checked + label[for="${uniqueId2}"]:before,
+      input[type="radio"]:checked + label[for="${uniqueId3}"]:before{
+        height: 3.5px;
+        width: 3.5px;
+        border: 2px solid black;
+      }
+      label[for="${uniqueId1}"]:before,label[for="${uniqueId2}"]:before,label[for="${uniqueId3}"]:before{
+        width: 5px;
+        height: 5px;
+      }
+    }
+
   `;
   // Edit Submit Btn Append
     let editSubmitBtn = document.createElement("button");
