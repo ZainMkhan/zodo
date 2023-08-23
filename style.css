@@ -577,12 +577,29 @@ input[type="radio"]:checked + label[for="high"]:before{
 
 
 /* Responsive */
-
-@media screen and (max-width: 700px){
+@media screen and (max-width: 1106px){
     body{
-        font-size: 0.4em;
+        font-size: 0.em;
     }
+    .expand{
+        height : 15em;
+      }
+}
 
+@media screen and (max-width: 992px){
+    body{
+        font-size: 0.6em;
+    }
+    .calendar-date{
+        width: 45%;
+    }
+    .delete{
+      width: 15px;
+      height: 15px;
+    }
+    .expand{
+      height : 11em;
+    }
     label[for="low"]:before,label[for="medium"]:before,label[for="high"]:before{
         width: 5px;
         height: 5px;
@@ -598,5 +615,41 @@ input[type="radio"]:checked + label[for="high"]:before{
     height: 3.5px;
     width: 3.5px;
     border: 2px solid black;
+}   
 }
+
+@media screen and (max-width: 768px){
+    body{
+        font-size: 0.5em;
+    }
+    .expand{
+        height : 10em;
+      }
 }
+
+@media screen and (max-width: 576px){
+    body{
+        font-size: 0.4em;
+    }
+    .sort-con{
+        width: 90%;
+    }
+    .task-field{
+        width: 90%;
+    }
+    .task-list{
+        width: 90%;
+    }
+    .delete{
+        width: 10px;
+        height: 10px;
+      }
+}
+/* 
+Breakpoint	Class infix	Dimensions
+X-Small	None	<576px
+Small	sm	≥576px
+Medium	md	≥768px OK 
+Large	lg	≥992px OK 
+Extra large	xl	≥1200px OK 
+Extra extra large	xxl	≥1400px OK */
