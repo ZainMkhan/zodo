@@ -1,9 +1,11 @@
 let taskList;
+let preSavedTaskList;
 function loadTasksFromLocalStorage() {
   taskList = JSON.parse(localStorage.getItem("TaskList")) || [];
   if (taskList.length === 0) {
     return;
   } else {
+    preSavedTaskList = [...taskList];
     taskList.forEach((tasks) => {
       addToList(tasks.priority, tasks.task, tasks.date, tasks.status);
 
@@ -54,7 +56,6 @@ const ul = document.querySelector(".task-list");
 const dateSelected = document.querySelector(".calendar-date");
 const prioritySelect = document.querySelectorAll('input[type="radio"]')
 const errorMessage = document.querySelector(".error-message");
-
 let priorirtySelected;
 
 
@@ -67,6 +68,103 @@ function openSortList(){
 }
 
 sortBtn.addEventListener('click', openSortList);
+
+//Sort by Date .. 
+function sortByDate(event) {
+  if (!event.target.classList.contains("sort-date")) {
+      return;
+  }
+  if (event.target.classList.contains("sort-date")) {
+      let taskDisplayList = document.querySelector(".task-list");
+      let sortDateBtn = event.target;
+
+      sortDateBtn.classList.toggle("selected");
+      taskDisplayList.classList.toggle("date-sorted");
+
+      
+      if(taskDisplayList.classList.contains("date-sorted") && taskDisplayList.classList.contains("priority-sorted")){
+        showError("Please unselect Priority Sort")
+        sortDateBtn.classList.toggle("selected");
+        return;
+      }
+      
+      if (!taskDisplayList.classList.contains("date-sorted")) {
+          taskList = [...preSavedTaskList];
+          statusBottomTask(taskList) 
+      }
+      else {
+          let includesDate = taskList.filter((task) => task.date !== "");
+          let notIncludesDate = taskList.filter((task) => task.date === "");
+          taskList = [...includesDate, ...notIncludesDate];
+          taskList = taskList.sort((task1, task2) => new Date(task1.date) - new Date(task2.date));
+          statusBottomTask(taskList)
+      }
+      clearTaskList();
+      renderTasks();
+  }
+}
+
+
+// Sort by priority 
+function sortByPriority(event){
+  if(!event.target.classList.contains("sort-priority")){
+    return;  
+  }
+  else if(event.target.classList.contains("sort-priority")){
+    let taskDisplayList = document.querySelector(".task-list");
+    let sortPrioritBtn = event.target;
+
+    sortPrioritBtn.classList.toggle("selected");
+    taskDisplayList.classList.toggle("priority-sorted");
+
+    if(!taskDisplayList.classList.contains("priority-sorted")){
+      taskList = [...preSavedTaskList];
+      statusBottomTask(taskList) 
+    }
+    if(taskDisplayList.classList.contains("priority-sorted") && taskDisplayList.classList.contains("date-sorted")){
+      showError("Please unselect Date Sort")
+      sortPrioritBtn.classList.toggle("selected");
+      return;
+    }
+    else if(taskDisplayList.classList.contains("priority-sorted")){
+      console.log(taskList.priority)
+      let includesPriority = taskList.filter((task) => task.priority !== "");
+      let notIncludesPriority = taskList.filter((task) => task.priority === "");
+
+      taskList = [...includesPriority, ...notIncludesPriority];
+
+      taskList = taskList.sort((task1, task2) =>{
+        const priorityOrder = {
+          "low" : 1,
+          "medium" : 2,
+          "high" : 3,
+        };
+
+      return priorityOrder[task1.priority] - priorityOrder[task2.priority];
+      })
+    }
+    clearTaskList();
+    renderTasks();
+  }
+}
+
+
+// Clear the existing tasks from the task list
+function clearTaskList() {
+  const taskListContainer = document.querySelector(".task-list");
+  taskListContainer.innerHTML = "";
+}
+
+// Render the sorted tasks
+function renderTasks() {
+  taskList.forEach(task => {
+      addToList(task.priority, task.task, task.date, task.status);
+  });
+}
+
+
+document.addEventListener("click", sortByPriority);
+document.addEventListener("click", sortByDate)
 
 //Input Text Field Open Function
 
@@ -477,12 +575,10 @@ function statusCheck(status, icon, element) {
   if (status) {
     icon.style.transform = "rotate(180deg)";
     element.style.textDecoration = "line-through";
-    statusTaskCon.style.marginTop = "5%";
   }
   if(!status){
     icon.style.transform = "rotate(0deg)";
     element.style.textDecoration = "none";
-    
   }
 }
 
@@ -541,11 +637,9 @@ function updateLocalStorage(key, arr){
 function statusBottomTask(list){
  let taskListTrue = list.filter((task) => task.status === true);
  let taskListFalse = list.filter((task) => task.status === false);
-
  return taskList = [...taskListFalse, ...taskListTrue];
  window.location.reload()
 }
-
 
 
 loadTasksFromLocalStorage()
